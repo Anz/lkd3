@@ -12,12 +12,17 @@ static struct kobj_attribute note_attribute = __ATTR(note, 0444, note_read, note
 static int __init hello_init (void)
 {
         int retval;
+
+        // create example kobject
         example = kobject_create_and_add("example", NULL);
         if (!example)
                 return -ENOMEM;
+
+        // create note attribute
         retval = sysfs_create_file(example, &note_attribute.attr);
         if (retval)
                 kobject_put(example);
+
         return retval;
 }
 

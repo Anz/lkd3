@@ -77,7 +77,7 @@ static void mouse_irq(struct urb *urb)
         // resubmit urb
         status = usb_submit_urb(urb, GFP_ATOMIC);
         if (status) {
-                err("mouse: cannot not resubmit urb (status %i)", status);
+                pr_err("mouse: cannot not resubmit urb (status %i)", status);
         }
 }
 
@@ -229,18 +229,5 @@ static struct usb_driver mouse_driver = {
         .id_table = mouse_id_table
 };
 
-static int __init mouse_init (void)
-{
-        int retval = usb_register(&mouse_driver);
-        if (!retval)
-                pr_info("mouse: init");
-        return retval;
-}
-
-static void __exit mouse_release (void)
-{
-        usb_deregister(&mouse_driver);
-}
-
-module_init(mouse_init);
-module_exit(mouse_release);
+// register usb driver
+module_usb_driver(mouse_driver);
